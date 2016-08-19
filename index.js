@@ -2,7 +2,11 @@ var fs = require('fs');
 var shell = require('gulp-shell');
 
 
-module.exports = function(gulp) {
+module.exports = function(gulp, options) {
+    var opts = {
+        'dotfile': options.dotfile || 'gulp.dot',
+        'pngfile': options.pngfile || 'gulp.png'
+    };
 
     gulp.task('graphGenerate', function () {
 
@@ -24,11 +28,11 @@ module.exports = function(gulp) {
 
         dot += '}\n';
 
-        fs.writeFileSync('gulp.dot', dot);
+        fs.writeFileSync(opts.dotfile, dot);
     });
 
     gulp.task('graph', ['graphGenerate'], shell.task([
-        'dot -Tpng gulp.dot >gulp.png'
+        'dot -Tpng ' + opts.dotfile + ' > ' + opts.pngfile
     ]));
 
 };
